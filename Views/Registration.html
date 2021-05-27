@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>registration</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script type="text/javascript">
+        function IsValidEmail(email) {
+            if (email.length <= 2) {
+                return false;
+            }
+            if (email.indexOf("@") == -1) {
+                return false;
+            }
+            var parts = email.split("@");
+            var dot = parts[1].indexOf(".");
+            var len = parts[1].length;
+            var dotSplits = parts[1].split(".");
+            var dotCount = dotSplits.length - 1;
+            if (dot == -1 || dot < 2 || dotCount > 2) {
+                return false;
+            }
+            for (var i = 0; i < dotSplits.length; i++) {
+                if (dotSplits[i].length == 0) {
+                    return false;
+                }
+            }
+            return true;
+        };
+        function ValidateEmail() {
+            var email = document.getElementById("txtEmail").value;
+            var lblError = document.getElementById("lblError");
+            lblError.innerHTML = "";
+            if (!IsValidEmail(email)) {
+                lblError.innerHTML = "Invalid email address.";
+            }
+        }
+    </script>
+    <script>
+      function validateForm(){
+      var name=document.forms["form"]["usr"].value
+      if(name== "")
+      {
+          var not_name=document.getElementById("not_name")
+          not_name.style.display="block";
+          return false;
+      }
+      var name=document.forms["form"]["usr"].value
+      var text=/^[a-z][a-z\s]*$/;
+      if(!(name.match(text))){
+        var not_name1=document.getElementById("not_name1")
+        not_name1.style.display="block";
+        return false;
+      }
+      var pswd=document.forms["form"]["pwd"].value
+      if(pswd== "")
+      {
+          var not_name=document.getElementById("not_pass")
+          not_name.style.display="block";
+          return false;
+      }
+    }
+    </script>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-dark bg-success">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#">Registration</a>
+            </div>
+          </nav>
+    </header>
+    <section>
+        <form onsubmit="return validateForm()" name="form" >
+            <div class="container" style="padding-left: 200px;margin-top: 50px;">
+                <div  >
+                    <h1>Registration Form</h1>
+                </div>
+                <div class="form-group">
+                    <label for="usr">Name:</label>
+                    <input type="text" style="width: 500px;" class="form-control" id="usr" required>
+                    <label id="not_name" style="display: none;">Name Cannot be empty</label>
+                    <label id="not_name1" style="display: none;">Name Can only contain letters</label>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" style="width: 500px;" class="form-control" id="txtEmail" required>
+                    <span id="lblError" style="color:red"></span>
+                </div>
+                <div class="form-group">
+                    <label for="pwd">Password:</label>
+                    <input type="password" style="width: 500px;" class="form-control" id="pwd" required>
+                    <label id="not_pass" style="display: none;">Password Cannot be empty</label>
+                </div>
+                <button type="submit" value="submit" onclick="ValidateEmail()" class="btn btn-primary mt-3" id="dataSend">Submit</button>
+                <div id="status">
+        
+                </div>
+            </div>
+    
+        </form>
+    </section>
+    <footer>
+        <div class="navbar navbar-dark bg-success" style="height: 100px;margin-top: 200px;">
+
+        </div>
+    </footer>
+
+    <script>
+
+        $(document).ready(function () {
+            $(dataSend).click(function () {
+                $.post("http://localhost:5000/registration",
+                    {
+                        name: document.getElementById("usr").value,
+                        password: document.getElementById("pwd").value,
+                        email: document.getElementById("txtEmail").value,
+                    
+                    },
+                    function (data,status) {
+                        document.getElementById("status").innerHTML= data+ " status " + status ;
+                    });
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+</body>
+</html>

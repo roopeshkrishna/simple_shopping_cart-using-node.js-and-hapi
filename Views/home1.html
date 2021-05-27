@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>index</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-dark bg-success">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#">HOME</a>
+            </div>
+          </nav>
+    </header>
+    <section>
+      <div style="margin-left: 400px; margin-top: 50px; margin-bottom: 20px;">
+        <a href="/viewCart" class="btn btn-primary" style="width: 400px;">view cart</a>
+      </div>
+    </section>
+    <section>
+      <h4 id="uId" style="display: none;">{{userId}}</h4>
+        <table class="table">
+            <thead>
+              
+              <tr> 
+                <th scope="col">name</th>
+                <th scope="col">description</th>
+                <th scope="col">price</th>
+                <th scope="col">image</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each value}}
+              <tr>
+
+                <td style="display: none;" id="proId">{{this.id}}</td>
+                <td id="name">{{this.name}}</td>
+                <td>{{this.description}}</td>
+                <td>{{this.price}}</td>
+
+                <td><img  src="/image/{{this.file}}" width="50" height="50" ></img></td>
+
+                <td><button type="submit" class="btn btn-primary" id="dataSend">Add to cart</button></td>
+                
+                </tr>
+              {{/each}}
+            </tbody>
+          </table> 
+       
+
+    </section>
+    <div id="status"></div>
+
+    <footer>
+        <div class="navbar navbar-dark bg-success" style="height: 100px;margin-top: 250px;">
+
+        </div>
+    </footer>
+    <script>
+
+      $(document).ready(function () {
+          $(dataSend).click(function () {
+              $.post("http://localhost:4000/addCart",
+                  {
+                      productId: document.getElementById("proId").innerHTML,
+                      userId: document.getElementById('uId').textContent,
+                      name: document.getElementById('name').innerHTML
+                  },
+                  function (data,status) {
+                      document.getElementById("status").innerHTML= data+ " status " + status ;
+                  });
+          });
+      });
+  </script>
+    
+</body>
+</html>
